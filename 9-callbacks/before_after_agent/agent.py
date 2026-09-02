@@ -32,6 +32,7 @@ def before_agent_callback(callback_context: CallbackContext) -> Optional[types.C
     # Set agent name if not present
     if "agent_name" not in state:
         state["agent_name"] = "SimpleChatBot"
+        print(f"=== Naming the state : {state['agent_name']}  ===")
 
     # Initialize request counter
     if "request_counter" not in state:

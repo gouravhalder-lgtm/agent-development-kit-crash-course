@@ -38,9 +38,9 @@ async def main():
     print(f"\tSession ID: {SESSION_ID}")
 
     runner = Runner(
-        agent=question_answering_agent,
-        app_name=APP_NAME,
-        session_service=session_service_stateful,
+        agent=question_answering_agent,  # REQUIRED: What processes the turn
+        app_name=APP_NAME, # Optional
+        session_service=session_service_stateful, # REQUIRED: Where history/state is stored
     )
 
     new_message = types.Content(
