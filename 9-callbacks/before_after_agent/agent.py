@@ -32,6 +32,7 @@ def before_agent_callback(callback_context: CallbackContext) -> Optional[types.C
     # Set agent name if not present
     if "agent_name" not in state:
         state["agent_name"] = "SimpleChatBot"
+        print(f"=== Naming the state : {state['agent_name']}  ===")
 
     # Initialize request counter
     if "request_counter" not in state:
@@ -40,7 +41,7 @@ def before_agent_callback(callback_context: CallbackContext) -> Optional[types.C
         state["request_counter"] += 1
 
     # Store start time for duration calculation in after_agent_callback
-    state["request_start_time"] = timestamp
+    state["request_start_time"] = timestamp.isoformat()
 
     # Log the request
     print("=== AGENT EXECUTION STARTED ===")
@@ -70,7 +71,14 @@ def after_agent_callback(callback_context: CallbackContext) -> Optional[types.Co
     timestamp = datetime.now()
     duration = None
     if "request_start_time" in state:
-        duration = (timestamp - state["request_start_time"]).total_seconds()
+        raw_start_time = state["request_start_time"]
+        
+        # 1. Parse string to datetime if it's currently a string
+        if isinstance(raw_start_time, str):
+            start_time = datetime.fromisoformat(raw_start_time)
+        else:
+            start_time = raw_start_time
+        duration = (timestamp - start_time).total_seconds()
 
     # Log the completion
     print("=== AGENT EXECUTION COMPLETED ===")
@@ -91,7 +99,7 @@ def after_agent_callback(callback_context: CallbackContext) -> Optional[types.Co
 # Create the Agent
 root_agent = LlmAgent(
     name="before_after_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.6-flash",
     description="A basic agent that demonstrates before and after agent callbacks",
     instruction="""
     You are a friendly greeting agent. Your name is {agent_name}.

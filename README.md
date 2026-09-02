@@ -10,7 +10,7 @@ You only need to create one virtual environment for all examples in this course.
 
 ```bash
 # Create virtual environment in the root directory
-python -m venv .venv
+python3 -m venv .venv
 
 # Activate (each new terminal)
 # macOS/Linux:
